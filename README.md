@@ -59,3 +59,15 @@
 [WARN] 2.16 - Ensure Userland Proxy is Disabled (Scored)
  4.5 - Ensure Content trust for Docker is Enabled (Automated)
 [WARN] 4.6 - Ensure that HEALTHCHECK instructions have been added to container images (Automated)
+
+7. Проверим уязвимости с помощью docker-scout. Для этого выберем образ и выполним анализ
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/09526929-f31e-4667-afac-06cbb5365964)
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/4b842547-867b-4220-980f-9e2a8527b1e2)
+
+   В результате будут обнаружены те же самые уязвимости, что выявила утилита trivy
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/eb1a2175-79e5-47b9-ab41-9049d605d4bd)
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/ce1e7e81-4d56-4814-b20b-25578824d331)
+
+
+
+
