@@ -129,10 +129,44 @@ sudo systemctl restart auditd
      ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/b1889651-e37f-4268-9f12-037fc801dec0)
 
    2.13 - Ensure centralized and remote logging is configured (Scored) - Убедитесь, что настроено централизованное и удаленное ведение журнала (оценено)
+
+   ELK Stack (Elasticsearch, Logstash, Kibana)
+
+   
    2.14 - Ensure containers are restricted from acquiring new privileges (Scored) - Убедитесь, что контейнерам запрещено получать новые привилегии (оценено)
+
+   docker run --no-new-privileges my_image
+
+   
    2.15 - Ensure live restore is enabled (Scored) - Убедитесь, что включено оперативное восстановление (оценено)
+
+   /etc/docker/daemon.json
+
+   {
+   
+     "live-restore": true
+  
+   }
+
+   
    2.16 - Ensure Userland Proxy is Disabled (Scored) - Убедитесь, что пользовательский прокси отключен (оценено)
+
+   {
+   
+    "userland-proxy": false
+   
+   }
+
+   
    4.5 - Ensure Content trust for Docker is Enabled (Automated) - Убедитесь, что доверие к контенту для Docker включено (автоматически)
+
+   Включение Content Trust для Docker — это отличная практика для обеспечения безопасности контейнеров. Content Trust используется для проверки подлинности и целостности образов Docker перед их загрузкой и запуском.
+
+   export DOCKER_CONTENT_TRUST=1
+   
+   docker trust key generate <ИМЯ>
+
+   docker trust sign <ИМЯ_ОБРАЗА>:<ТЕГ>
 
    
    4.6 - Ensure that HEALTHCHECK instructions have been added to container images (Automated) - Убедитесь, что инструкции по проверке работоспособности были добавлены к изображениям контейнеров (были добавлены до проверки)
