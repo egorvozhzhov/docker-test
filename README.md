@@ -42,25 +42,51 @@
    ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/c4b9b874-9ab9-4420-8dfe-6cc91e756b60)
    ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/4731c784-2f40-46d3-8aee-a653a520b002)
 
-
-
-
-
+   Получим следующие варны:
    
-    1.1.1 - Ensure a separate partition for containers has been created (Automated)
-    1.1.3 - Ensure auditing is configured for the Docker daemon (Automated)
-    1.1.4 - Ensure auditing is configured for Docker files and directories -/run/containerd (Automated)
-   2.2 - Ensure network traffic is restricted between containers on the default bridge (Scored)
-   2.9 - Enable user namespace support (Scored)
-    2.12 - Ensure that authorization for Docker client commands is enabled (Scored)
-[WARN] 2.13 - Ensure centralized and remote logging is configured (Scored)
-[WARN] 2.14 - Ensure containers are restricted from acquiring new privileges (Scored)
-[WARN] 2.15 - Ensure live restore is enabled (Scored)
-[WARN] 2.16 - Ensure Userland Proxy is Disabled (Scored)
- 4.5 - Ensure Content trust for Docker is Enabled (Automated)
-[WARN] 4.6 - Ensure that HEALTHCHECK instructions have been added to container images (Automated)
+   1.1.1 - Ensure a separate partition for containers has been created (Automated) - Убедитесь, что создан отдельный раздел для контейнеров (автоматизирован)
+   1.1.3 - Ensure auditing is configured for the Docker daemon (Automated) - Убедитесь, что аудит настроен для демона Docker (автоматизирован)
+   Аудит на linux-сервере может заключаться в настройке демона auditd. Этот демон отвечает за запись записи аудита в файл журнала аудита. Чтобы настроить аудит для файлов Docker, выполните:
 
-7. Проверим уязвимости с помощью docker-scout. Для этого выберем образ и выполним анализ
+
+   [root@siddhesh ~]# vim /etc/audit/rules.d/audit.rules
+   -w /usr/bin/docker -p wa
+   -w /var/lib/docker -p wa
+   -w /etc/docker -p wa
+   -w /lib/systemd/system/docker.service -p wa
+   -w /lib/systemd/system/docker.socket -p wa
+   -w /etc/default/docker -p wa
+   -w /etc/docker/daemon.json -p wa
+   -w /usr/bin/docker-containerd -p wa
+   -w /usr/bin/docker-runc -p wa
+   [root@siddhesh ~]# systemctl restart auditd.service
+   
+   
+   [root@siddhesh ~]# auditctl -l
+   -w /usr/bin/docker -p wa
+   -w /var/lib/docker -p wa
+   -w /etc/docker -p wa 
+   -w /lib/systemd/system/docker.service -p wa 
+   -w /lib/systemd/system/docker.socket -p wa 
+   -w /etc/default/docker -p wa 
+   -w /etc/docker/daemon.json -p wa 
+   -w /usr/bin/docker-containerd -p wa 
+   -w /usr/bin/docker-runc -p wa
+
+
+   1.1.4 - Ensure auditing is configured for Docker files and directories -/run/containerd (Automated) - Убедитесь, что аудит настроен для файлов и каталогов Docker -/run/containerd (автоматический)
+   2.2 - Ensure network traffic is restricted between containers on the default bridge (Scored) - Убедитесь, что сетевой трафик ограничен между контейнерами на мосту по умолчанию (оценено) (файл конфигурации /etc/docker/daemon.json:
+"icc":false — отключает обмен данными между контейнерами, чтобы избежать ненужной утечки информации.)
+   2.9 - Enable user namespace support (Scored) - Включить поддержку пользовательского пространства имен (оценено)
+   2.12 - Ensure that authorization for Docker client commands is enabled (Scored) - Убедитесь, что авторизация для клиентских команд Docker включена (оценена)
+   2.13 - Ensure centralized and remote logging is configured (Scored) - Убедитесь, что настроено централизованное и удаленное ведение журнала (оценено)
+   2.14 - Ensure containers are restricted from acquiring new privileges (Scored) - Убедитесь, что контейнерам запрещено получать новые привилегии (оценено)
+   2.15 - Ensure live restore is enabled (Scored) - Убедитесь, что включено оперативное восстановление (оценено)
+   2.16 - Ensure Userland Proxy is Disabled (Scored) - Убедитесь, что пользовательский прокси отключен (оценено)
+   4.5 - Ensure Content trust for Docker is Enabled (Automated) - Убедитесь, что доверие к контенту для Docker включено (автоматически)
+   4.6 - Ensure that HEALTHCHECK instructions have been added to container images (Automated) - Убедитесь, что инструкции по проверке работоспособности были добавлены к изображениям контейнеров (были добавлены до проверки)
+
+8. Проверим уязвимости с помощью docker-scout. Для этого выберем образ и выполним анализ
    ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/09526929-f31e-4667-afac-06cbb5365964)
    ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/4b842547-867b-4220-980f-9e2a8527b1e2)
 
