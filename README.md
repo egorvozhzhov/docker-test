@@ -51,6 +51,7 @@
 
    Как найти раздел по умолчанию для контейнеров Docker? -> docker info -f'{{.DockerRootDir }}'
 
+
    
    1.1.3 - Ensure auditing is configured for the Docker daemon (Automated) - Убедитесь, что аудит настроен для демона Docker (автоматизирован)
 
@@ -59,6 +60,7 @@
 
 
    ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/ba844651-decd-414e-888f-1aaeb08c16de)
+
 
 
 
@@ -77,6 +79,7 @@
 
 sudo systemctl restart auditd
       
+
    
    2.2 - Ensure network traffic is restricted between containers on the default bridge (Scored) - Убедитесь, что сетевой трафик ограничен между контейнерами на мосту по умолчанию (оценено) 
 
@@ -85,6 +88,7 @@ sudo systemctl restart auditd
 
    
    "icc":false — отключает обмен данными между контейнерами, чтобы избежать ненужной утечки информации.
+
 
    
    2.9 - Enable user namespace support (Scored) - Включить поддержку пользовательского пространства имен (оценено)
@@ -116,7 +120,14 @@ sudo systemctl restart auditd
 
    docker info | grep userns
 
+
    2.12 - Ensure that authorization for Docker client commands is enabled (Scored) - Убедитесь, что авторизация для клиентских команд Docker включена (оценена)
+
+    ~/.docker/config.json
+
+   
+     ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/b1889651-e37f-4268-9f12-037fc801dec0)
+
    2.13 - Ensure centralized and remote logging is configured (Scored) - Убедитесь, что настроено централизованное и удаленное ведение журнала (оценено)
    2.14 - Ensure containers are restricted from acquiring new privileges (Scored) - Убедитесь, что контейнерам запрещено получать новые привилегии (оценено)
    2.15 - Ensure live restore is enabled (Scored) - Убедитесь, что включено оперативное восстановление (оценено)
