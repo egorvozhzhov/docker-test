@@ -29,3 +29,13 @@
 
    Решение: уязвимость существует до версии 23.3, необходимо использовать библиотеку, начиная с версии 23.3. У нас ипользуется версия 23.0.1
 
+6. В отдельную папку склонируем репозиторий утилиты bench-security
+
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/e0baa5f2-c61b-4d5c-9a2f-7c10f94e8bdc)
+
+   Запустим ее
+
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/ce661708-d6a6-4998-a6ec-265d6a2267a5)
+
+   
+
