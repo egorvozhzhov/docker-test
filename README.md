@@ -30,6 +30,7 @@
    Решение: уязвимость существует до версии 23.3, необходимо использовать библиотеку, начиная с версии 23.3. У нас ипользуется версия 23.0.1
 
 6. В отдельную папку склонируем репозиторий утилиты bench-security
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/682157ac-daa3-4ec0-a867-dd4e37762d75)
 
    ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/e0baa5f2-c61b-4d5c-9a2f-7c10f94e8bdc)
 
@@ -45,36 +46,38 @@
    Получим следующие варны:
    
    1.1.1 - Ensure a separate partition for containers has been created (Automated) - Убедитесь, что создан отдельный раздел для контейнеров (автоматизирован)
+
+   Всегда рекомендуется использовать другой, кроме раздела docker по умолчанию. Большинство облачных платформ, таких как AWS или DigitalOcean, по умолчанию никогда не предоставляют максимальное свободное место под разделом /var.       Так что в этом случае вы можете столкнуться с нехваткой дискового пространства. 
+
+   Как найти раздел по умолчанию для контейнеров Docker? -> docker info -f'{{.DockerRootDir }}'
+
+   
    1.1.3 - Ensure auditing is configured for the Docker daemon (Automated) - Убедитесь, что аудит настроен для демона Docker (автоматизирован)
+
+   
    Аудит на linux-сервере может заключаться в настройке демона auditd. Этот демон отвечает за запись записи аудита в файл журнала аудита. Чтобы настроить аудит для файлов Docker, выполните:
 
 
-   [root@siddhesh ~]# vim /etc/audit/rules.d/audit.rules
-   -w /usr/bin/docker -p wa
-   -w /var/lib/docker -p wa
-   -w /etc/docker -p wa
-   -w /lib/systemd/system/docker.service -p wa
-   -w /lib/systemd/system/docker.socket -p wa
-   -w /etc/default/docker -p wa
-   -w /etc/docker/daemon.json -p wa
-   -w /usr/bin/docker-containerd -p wa
-   -w /usr/bin/docker-runc -p wa
-   [root@siddhesh ~]# systemctl restart auditd.service
-   
-   
-   [root@siddhesh ~]# auditctl -l
-   -w /usr/bin/docker -p wa
-   -w /var/lib/docker -p wa
-   -w /etc/docker -p wa 
-   -w /lib/systemd/system/docker.service -p wa 
-   -w /lib/systemd/system/docker.socket -p wa 
-   -w /etc/default/docker -p wa 
-   -w /etc/docker/daemon.json -p wa 
-   -w /usr/bin/docker-containerd -p wa 
-   -w /usr/bin/docker-runc -p wa
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/ba844651-decd-414e-888f-1aaeb08c16de)
+
 
 
    1.1.4 - Ensure auditing is configured for Docker files and directories -/run/containerd (Automated) - Убедитесь, что аудит настроен для файлов и каталогов Docker -/run/containerd (автоматический)
+
+
+   Docker рекомендует использовать аудит на системном уровне для ключевых каталогов Docker. Аудит регистрирует все операции, влияющие на отслеживаемые файлы и каталоги. Это позволяет отслеживать потенциально деструктивные изменения. Убедитесь, что у вас установлен auditd. Отредактируйте файл /etc/audit/audit.rules и добавьте следующие строки в нижнюю часть файла:
+
+
+![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/f9826506-1701-4899-987a-f927fcd8d700)
+
+
+Инструкция -p wa означает, что auditd будет регистрировать записи и изменения атрибутов, которые влияют на файлы. Если выходные данные Docker Bench предлагают использовать аудит для дополнительных каталогов, добавьте их в список. Каталоги Docker могут меняться со временем.
+
+Чтобы изменения вступили в силу, необходимо перезапустить auditd:
+
+sudo systemctl restart auditd
+      
+   
    2.2 - Ensure network traffic is restricted between containers on the default bridge (Scored) - Убедитесь, что сетевой трафик ограничен между контейнерами на мосту по умолчанию (оценено) (файл конфигурации /etc/docker/daemon.json:
 "icc":false — отключает обмен данными между контейнерами, чтобы избежать ненужной утечки информации.)
    2.9 - Enable user namespace support (Scored) - Включить поддержку пользовательского пространства имен (оценено)
