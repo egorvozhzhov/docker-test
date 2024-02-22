@@ -36,6 +36,26 @@
    Запустим ее
 
    ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/ce661708-d6a6-4998-a6ec-265d6a2267a5)
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/dd9415e5-656e-41f5-ac09-264f4ac1ed23)
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/1f192a8a-90d3-4aa0-9655-1d0dcaeb37ac)
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/c9957a71-df54-4663-ad0c-125e25293455)
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/c4b9b874-9ab9-4420-8dfe-6cc91e756b60)
+   ![image](https://github.com/egorvozhzhov/docker-test/assets/71019753/4731c784-2f40-46d3-8aee-a653a520b002)
+
+
+
+
 
    
-
+    1.1.1 - Ensure a separate partition for containers has been created (Automated)
+    1.1.3 - Ensure auditing is configured for the Docker daemon (Automated)
+    1.1.4 - Ensure auditing is configured for Docker files and directories -/run/containerd (Automated)
+   2.2 - Ensure network traffic is restricted between containers on the default bridge (Scored)
+   2.9 - Enable user namespace support (Scored)
+    2.12 - Ensure that authorization for Docker client commands is enabled (Scored)
+[WARN] 2.13 - Ensure centralized and remote logging is configured (Scored)
+[WARN] 2.14 - Ensure containers are restricted from acquiring new privileges (Scored)
+[WARN] 2.15 - Ensure live restore is enabled (Scored)
+[WARN] 2.16 - Ensure Userland Proxy is Disabled (Scored)
+ 4.5 - Ensure Content trust for Docker is Enabled (Automated)
+[WARN] 4.6 - Ensure that HEALTHCHECK instructions have been added to container images (Automated)
