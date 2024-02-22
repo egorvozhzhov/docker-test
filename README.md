@@ -78,15 +78,52 @@
 sudo systemctl restart auditd
       
    
-   2.2 - Ensure network traffic is restricted between containers on the default bridge (Scored) - Убедитесь, что сетевой трафик ограничен между контейнерами на мосту по умолчанию (оценено) (файл конфигурации /etc/docker/daemon.json:
-"icc":false — отключает обмен данными между контейнерами, чтобы избежать ненужной утечки информации.)
+   2.2 - Ensure network traffic is restricted between containers on the default bridge (Scored) - Убедитесь, что сетевой трафик ограничен между контейнерами на мосту по умолчанию (оценено) 
+
+   
+   файл конфигурации /etc/docker/daemon.json:
+
+   
+   "icc":false — отключает обмен данными между контейнерами, чтобы избежать ненужной утечки информации.
+
+   
    2.9 - Enable user namespace support (Scored) - Включить поддержку пользовательского пространства имен (оценено)
+
+
+   User namespaces - это механизм в ядре Linux, который позволяет изолировать процессы, принадлежащие разным пользователям, даже если они используют одинаковые идентификаторы пользователя внутри и снаружи контейнера. Это обеспечивает дополнительный уровень безопасности и изоляции.
+
+1. Убедиться, что поддержка user namespaces включена в ядре Linux на хосте. Для этого можно выполнить команду:
+   
+   bash grep CONFIG_USER_NS /boot/config-uname -r
+
+
+   Если вывод содержит =y или =CONFIG_USER_NS=y, то поддержка включена.
+
+2. Добавить --userns-remap в файл конфигурации Docker daemon.
+
+   Открыть файл конфигурации Docker daemon для редактирования (обычно располагается в /etc/docker/daemon.json) и добавить туда следующий параметр:
+   
+
+   {
+     "userns-remap": "default"
+   }
+   
+   После внесения изменений нужно перезапустить сервис Docker:
+   
+   sudo systemctl restart docker
+
+3. После этого Docker будет использовать пользовательское пространство имен для изоляции контейнеров. Можно проверить текущую конфигурацию Docker с помощью команды:
+
+   docker info | grep userns
+
    2.12 - Ensure that authorization for Docker client commands is enabled (Scored) - Убедитесь, что авторизация для клиентских команд Docker включена (оценена)
    2.13 - Ensure centralized and remote logging is configured (Scored) - Убедитесь, что настроено централизованное и удаленное ведение журнала (оценено)
    2.14 - Ensure containers are restricted from acquiring new privileges (Scored) - Убедитесь, что контейнерам запрещено получать новые привилегии (оценено)
    2.15 - Ensure live restore is enabled (Scored) - Убедитесь, что включено оперативное восстановление (оценено)
    2.16 - Ensure Userland Proxy is Disabled (Scored) - Убедитесь, что пользовательский прокси отключен (оценено)
    4.5 - Ensure Content trust for Docker is Enabled (Automated) - Убедитесь, что доверие к контенту для Docker включено (автоматически)
+
+   
    4.6 - Ensure that HEALTHCHECK instructions have been added to container images (Automated) - Убедитесь, что инструкции по проверке работоспособности были добавлены к изображениям контейнеров (были добавлены до проверки)
 
 8. Проверим уязвимости с помощью docker-scout. Для этого выберем образ и выполним анализ
